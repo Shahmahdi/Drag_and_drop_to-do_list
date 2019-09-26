@@ -9,7 +9,7 @@ export const Column = (props: {
   tasks: ITask[];
 }) => {
   return (
-    <div className="ma2 ba b--black-40 br2">
+    <div className="ma2 ba b--black-40 br2 w-third flex flex-column">
       <h3 className="pa2 ma0">{props.column.title}</h3>
       <Droppable
         droppableId={props.column.id}
@@ -19,8 +19,8 @@ export const Column = (props: {
           const allowedProps = { ref: provided.innerRef }
           return (
             <div
-              className={`pa2 ${snapshot.isDraggingOver ? 'bg-lightest-blue' : 'bg-white'}`}
-              style={{ transition: 'background-color 0.2s ease' }}
+              className={`pa2 flex-grow-1 ${snapshot.isDraggingOver ? 'bg-lightest-blue' : 'bg-white'}`}
+              style={{ transition: 'background-color 0.2s ease', minHeight: '100px' }}
               {...provided.droppableProps}
               {...allowedProps}
             >

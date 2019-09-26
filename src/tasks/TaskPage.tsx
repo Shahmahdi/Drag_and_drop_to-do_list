@@ -11,26 +11,51 @@ export const TaskPage = () => {
     if (!result.destination) {
       return;
     }
-    if (result.source.droppableId === result.destination.droppableId 
+    if (result.source.droppableId === result.destination.droppableId
       && result.source.index === result.destination.index) {
-        return;
+      return;
     }
-    const column = (state.columns as any)[result.source.droppableId];
-    const newTaskIds = Array.from(column.taskIds);
-    newTaskIds.splice(result.source.index, 1);
-    newTaskIds.splice(result.destination.index, 0, result.draggableId);
+    const sourceColumn = (state.columns as any)[result.source.droppableId];
+    const destinationColumn = (state.columns as any)[result.destination.droppableId];
 
-    const newColumn = {
-      ...column,
-      taskIds: newTaskIds
-    }
-    setState({
-      ...state,
-      columns: {
-        ...state.columns,
-        [newColumn.id]: newColumn
+    if (sourceColumn === destinationColumn) {
+      const newTaskIds = Array.from(sourceColumn.taskIds);
+      newTaskIds.splice(result.source.index, 1);
+      newTaskIds.splice(result.destination.index, 0, result.draggableId);
+
+      const newColumn = {
+        ...sourceColumn,
+        taskIds: newTaskIds
       }
-    })
+      setState({
+        ...state,
+        columns: {
+          ...state.columns,
+          [newColumn.id]: newColumn
+        }
+      });
+    } else {
+      const sourceColumnTaskIds = Array.from(sourceColumn.taskIds);
+      sourceColumnTaskIds.splice(result.source.index, 1);
+      const newSourceColumnTaskIds = {
+        ...sourceColumn,
+        taskIds: sourceColumnTaskIds
+      }
+      const destinationColumnTaskIds = Array.from(destinationColumn.taskIds);
+      destinationColumnTaskIds.splice(result.destination.index, 0, result.draggableId);
+      const newDestinationColumnTaskIds = {
+        ...destinationColumn,
+        taskIds: destinationColumnTaskIds
+      }
+      setState({
+        ...state,
+        columns: {
+          ...state.columns,
+          [newSourceColumnTaskIds.id]: newSourceColumnTaskIds,
+          [newDestinationColumnTaskIds.id]: newDestinationColumnTaskIds
+        }
+      })
+    }
   }
 
   return (
@@ -38,19 +63,21 @@ export const TaskPage = () => {
       <DragDropContext
         onDragEnd={(result) => dragEnd(result)}
       >
-      {state.columnOrder.map(columnId => {
-        const column: IColumn = (state.columns as any)[columnId];
-        const tasks: ITask[] = column.taskIds.map((taskId: string) => 
-          (state.tasks as any)[taskId]);
-        
-        return (
-          <Column
-            key={column.id}
-            column={column}
-            tasks={tasks}
-          />
-        )
-      })}
+        <div className="flex">
+          {state.columnOrder.map(columnId => {
+            const column: IColumn = (state.columns as any)[columnId];
+            const tasks: ITask[] = column.taskIds.map((taskId: string) =>
+              (state.tasks as any)[taskId]);
+
+            return (
+              <Column
+                key={column.id}
+                column={column}
+                tasks={tasks}
+              />
+            )
+          })}
+        </div>
       </DragDropContext>
     </div>
   )
