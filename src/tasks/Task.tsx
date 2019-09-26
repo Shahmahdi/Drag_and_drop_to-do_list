@@ -12,11 +12,12 @@ export const Task = (props: {
       draggableId={props.task.id}
       index={props.index}
     >
-      {(provided) => {
+      {(provided, snapshot) => {
         const allowedProps = { ref: provided.innerRef }
         return (
           <div
-            className="ba b--black-20 br2 pa2 mb2 bg-white"
+            className={`ba b--black-20 br2 pa2 mb2 
+              ${snapshot.isDragging ? 'bg-light-green': 'bg-white' }`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             {...allowedProps}

@@ -14,12 +14,13 @@ export const Column = (props: {
       <Droppable
         droppableId={props.column.id}
       >
-        {(provided) => {
+        {(provided, snapshot) => {
 
           const allowedProps = { ref: provided.innerRef }
           return (
             <div
-              className="pa2"
+              className={`pa2 ${snapshot.isDraggingOver ? 'bg-lightest-blue' : 'bg-white'}`}
+              style={{ transition: 'background-color 0.2s ease' }}
               {...provided.droppableProps}
               {...allowedProps}
             >
