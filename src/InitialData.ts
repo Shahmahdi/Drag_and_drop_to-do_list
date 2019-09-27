@@ -17,21 +17,21 @@ export const InitialData = {
     '4': { id: '4', content: 'Cook dinner'}
   },
   columns: {
-    '1': {
-      id: '1',
+    'col1': {
+      id: 'col1',
       title: 'To-do',
       taskIds: ['1', '2', '3', '4']
     },
-    '2': {
-      id: '2',
+    'col2': {
+      id: 'col2',
       title: 'In progress',
       taskIds: []
     },
-    '3': {
-      id: '3',
+    'col3': {
+      id: 'col3',
       title: 'Done',
       taskIds: []
     }
   },
-  columnOrder: ['1', '2', '3']
+  columnOrder: ['col1', 'col2', 'col3']
 }

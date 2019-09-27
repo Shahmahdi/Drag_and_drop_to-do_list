@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { InitialData, IColumn, ITask } from '../InitialData'
 import { Column } from './Column';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 
 export const TaskPage = () => {
 
@@ -15,6 +15,18 @@ export const TaskPage = () => {
       && result.source.index === result.destination.index) {
       return;
     }
+
+    if (result.type === "column") {
+      const newColumnOrder = Array.from(state.columnOrder);
+      newColumnOrder.splice(result.source.index, 1);
+      newColumnOrder.splice(result.destination.index, 0, result.draggableId);
+      setState({
+        ...state,
+        columnOrder: newColumnOrder
+      });
+      return;
+    }
+ 
     const sourceColumn = (state.columns as any)[result.source.droppableId];
     const destinationColumn = (state.columns as any)[result.destination.droppableId];
 
@@ -63,21 +75,38 @@ export const TaskPage = () => {
       <DragDropContext
         onDragEnd={(result) => dragEnd(result)}
       >
-        <div className="flex">
-          {state.columnOrder.map(columnId => {
-            const column: IColumn = (state.columns as any)[columnId];
-            const tasks: ITask[] = column.taskIds.map((taskId: string) =>
-              (state.tasks as any)[taskId]);
-
+        <Droppable
+          droppableId="all-columns"
+          type="column"
+          direction="horizontal"
+        >
+          {(provided) => {
+            const allowedProps = { ref: provided.innerRef }
             return (
-              <Column
-                key={column.id}
-                column={column}
-                tasks={tasks}
-              />
-            )
-          })}
-        </div>
+              <div 
+                className="flex"
+                {...provided.droppableProps}
+                {...allowedProps}
+              >
+                {state.columnOrder.map((columnId, index) => {
+                  const column: IColumn = (state.columns as any)[columnId];
+                  const tasks: ITask[] = column.taskIds.map((taskId: string) =>
+                    (state.tasks as any)[taskId]);
+
+                  return (
+                    <Column
+                      key={column.id}
+                      column={column}
+                      tasks={tasks}
+                      index={index}
+                    />
+                  )
+                })}
+                {provided.placeholder}
+              </div>
+            );
+          }}
+        </Droppable>
       </DragDropContext>
     </div>
   )
