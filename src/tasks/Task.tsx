@@ -21,6 +21,7 @@ export const Task = (props: {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             {...allowedProps}
+            onClick={() => console.log('task clicked')}
           >
             {props.task.content}
           </div>

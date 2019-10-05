@@ -3,6 +3,34 @@ import { IColumn, ITask } from '../InitialData'
 import { Task } from './Task'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
+// interface InnerTaskProps {
+//   tasks: any;
+// }
+// class InnerTask extends React.Component<InnerTaskProps, {}> {
+
+//   shouldComponentUpdate(nextProps: any) {
+//     if (nextProps.tasks === this.props.tasks) {
+//       console.log('same task');
+//       return false;
+//     }
+//     console.log('different task');
+//     return true;
+//   }
+
+//   render() {
+//     console.log(`InnerTask`);
+//     return (
+//       this.props.tasks.map((task: any, index: number) =>
+//         <Task
+//           key={task.id}
+//           task={task}
+//           index={index}
+//         />
+//       )
+//     );
+//   }
+// }
+
 export const Column = (props: {
   key: string;
   column: IColumn;
@@ -22,11 +50,11 @@ export const Column = (props: {
             {...provided.draggableProps}
             {...allowedProps}
           >
-            <h3 
+            <h3
               className="pa2 ma0"
               {...provided.dragHandleProps}
             >
-            {props.column.title}
+              {props.column.title}
             </h3>
             <Droppable
               droppableId={props.column.id}
@@ -48,6 +76,7 @@ export const Column = (props: {
                         index={index}
                       />
                     )}
+                    {/* <InnerTask tasks={props.tasks} /> */}
                     {provided.placeholder}
                   </div>
                 )

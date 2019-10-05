@@ -3,6 +3,40 @@ import { InitialData, IColumn, ITask } from '../InitialData'
 import { Column } from './Column';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 
+// interface InnerListProps {
+//   key: string,
+//   column: IColumn,
+//   taskMap: any,
+//   index: number
+// }
+
+// class InnerList extends React.Component<InnerListProps, {}> {
+
+//   shouldComponentUpdate(nextProps: any) {
+//     if (
+//       nextProps.column === this.props.column &&
+//       nextProps.taskMap === this.props.taskMap &&
+//       nextProps.index === this.props.index
+//     ) {
+//       return false;
+//     }
+//     return true;
+//   }
+
+//   render() {
+//     const tasks: ITask[] = this.props.column.taskIds.map((taskId: string) =>
+//       this.props.taskMap[taskId]);
+//     return (
+//       <Column
+//         key={this.props.column.id}
+//         column={this.props.column}
+//         tasks={tasks}
+//         index={this.props.index}
+//       />
+//     );
+//   }
+// }
+
 export const TaskPage = () => {
 
   const [state, setState] = useState(InitialData)
@@ -26,7 +60,7 @@ export const TaskPage = () => {
       });
       return;
     }
- 
+
     const sourceColumn = (state.columns as any)[result.source.droppableId];
     const destinationColumn = (state.columns as any)[result.destination.droppableId];
 
@@ -83,7 +117,7 @@ export const TaskPage = () => {
           {(provided) => {
             const allowedProps = { ref: provided.innerRef }
             return (
-              <div 
+              <div
                 className="flex"
                 {...provided.droppableProps}
                 {...allowedProps}
@@ -101,6 +135,14 @@ export const TaskPage = () => {
                       index={index}
                     />
                   )
+                  // return (
+                  //   <InnerList
+                  //     key={column.id}
+                  //     column={column}
+                  //     taskMap={state.tasks}
+                  //     index={index}
+                  //   />
+                  // )
                 })}
                 {provided.placeholder}
               </div>
